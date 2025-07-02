@@ -5,7 +5,7 @@ var descInput = document.getElementById('productDesc');
 var searchInput = document.getElementById('secrchInput');
 var addbutton = document.getElementById('AddButton');
 var updatebutton = document.getElementById('UpdateButton');
-var productList=JSON.parse(localStorage.getItem('products'));
+var productList = []
 
 var alertnamv = document.getElementById('alertName');
 var alertpricev =document.getElementById('alertPrice');
@@ -13,12 +13,11 @@ var alerttypev =document.getElementById('alertType');
 var alertdescv =document.getElementById('alertDesc');
 
 
-display();
 
-if(localStorage.getItem('products') != null){
-    productList=[];
+if (localStorage.getItem('products') != null) {
+    productList = JSON.parse(localStorage.getItem('products'))
+    display();
 }
-
 
 function addProduct(){
     if(namevalidation() && pricevalidation() && typevalidation() && descvalidation()){
