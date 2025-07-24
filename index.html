@@ -3,65 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD SYSTEM</title>
+    <link rel="icon" href="images/icon.png" type="icon">
+    <title>Product CRUD</title>
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <section class="bg-info curdba" >
-        <div class="container bg-info py-4 overflow-hidden ">
-            <h1 class="text-white text-center">CRUD SYSTEM</h1>
-            <div>
-                <label for="productName" >Product Name</label>
-                <input type="text" id="productName" class="con d-block w-100 form-control " oninput="namevalidation()" placeholder="Please Enter Product Name" >
-                <div id="alertName" class="alert alert-danger d-none"  role="alert">
-                    Name must be from 4 to 8 letters 
+    <section>
+        <div class="container p-4 overflow-hidden bg-white rounded shadow">
+            
+            <h2 class="text-primary mb-4 text-center">Product Management</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <input type="text" id="productName" class="con form-control " oninput="namevalidation()" placeholder="Product Name" >
+                    <div id="alertName" class="alert alert-danger d-none"  role="alert">
+                        Name must start with a capital letter and be 4 to 8 letters long
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label for="productPrice">Product Price</label>
-                <input type="text" id="productPrice" class="con d-block w-100 form-control" oninput="pricevalidation()" placeholder="Please Enter Product Price">
-                <div id="alertPrice" class="alert alert-danger d-none"  role="alert">
-                    Price must be between 1000 and 10000
+                <div class="col-md-6">
+                    <input type="number" id="productPrice" class="con form-control " oninput="pricevalidation()" placeholder="Product Price">
+                    <div id="alertPrice" class="alert alert-danger d-none"  role="alert">
+                        Enter a valid positive price (e.g. 10 or 10.50)
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label for="productType" >Product Type</label>
-                <input type="text" id="productType" class="con d-block w-100 form-control" oninput="typevalidation()" placeholder="Please Enter Product Type">
-                <div id="alertType" class="alert alert-danger d-none"  role="alert">
-                    Type must be mobile, screen, or watch
+                <div class="col-md-6">
+                    <input type="text" id="productType" class="con form-control" oninput="typevalidation()" placeholder="Product Type">
+                    <div id="alertType" class="alert alert-danger d-none"  role="alert">
+                        Product type must start with a capital letter and be 2-12 letters
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label for="productDesc" >Product Description</label>
-                <textarea class="form-control" id="productDesc" rows="3" oninput="descvalidation()" placeholder="Please Enter Product Description"></textarea>
-                <div id="alertDesc" class="alert alert-danger d-none"  role="alert">
-                    Description must be 20–500 words
+                <div class="col-md-6">
+                    <input type="number" id="productQuantity" class="con form-control" oninput="Quantityvalidation()" placeholder="Product Quantity">
+                    <div id="alertQuantity" class="alert alert-danger d-none"  role="alert">
+                        Quantity must be a positive whole number
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <textarea class="form-control" id="productDesc" rows="3" oninput="descvalidation()" placeholder="Product Description"></textarea>
+                    <div id="alertDesc" class="alert alert-danger d-none"  role="alert">
+                        Description must be 10–100 characters (letters, numbers, spaces only)
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button  id="AddButton" class="btn btn-primary  rounded-4 w-75 d-block mx-auto" onclick="addProduct()">Add Product</button>  
+                    <button  id="UpdateButton" class="btn btn-primary  rounded-4 w-75 d-none mx-auto" onclick="updateProduct()" >Update Product</button> 
+                </div>
+                <div class="col-md-12">
+                    <input id="secrchInput" type="search" class="form-control w-50 d-block mx-auto" placeholder="search by Name..." oninput="search()"> 
                 </div>
             </div>
 
-            <button  id="AddButton" class="btn btn-dark mt-3 rounded-4 w-75 d-block mx-auto" onclick="addProduct()">Add Product</button>  
-            <button  id="UpdateButton" class="btn btn-dark mt-3 rounded-4 w-75 d-none mx-auto" onclick="updateProduct()" >Update Product</button>  
-            <input id="secrchInput" type="search" class="form-control w-50 d-block mx-auto my-3" placeholder="search by Name..." oninput="search()"> 
-            
-            
-            <table class="table table-hover mt-5 mb-2 rounded-2 overflow-hidden">
-                <thead >
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                   
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover mt-5 mb-2 rounded-2">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        
+                    </tbody>
+                </table>
+            </div>
+
 
         </div>
     </section>
