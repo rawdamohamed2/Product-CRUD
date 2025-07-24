@@ -1,18 +1,17 @@
-var nameInput = document.getElementById('productName');
-var priceInput = document.getElementById('productPrice');
-var typeInput = document.getElementById('productType');
-var descInput = document.getElementById('productDesc');
-var searchInput = document.getElementById('secrchInput');
-var addbutton = document.getElementById('AddButton');
-var updatebutton = document.getElementById('UpdateButton');
-var productList = []
-
-var alertnamv = document.getElementById('alertName');
-var alertpricev =document.getElementById('alertPrice');
-var alerttypev =document.getElementById('alertType');
-var alertdescv =document.getElementById('alertDesc');
-
-
+const nameInput = document.getElementById('productName');
+const priceInput = document.getElementById('productPrice');
+const typeInput = document.getElementById('productType');
+const descInput = document.getElementById('productDesc');
+const searchInput = document.getElementById('secrchInput');
+const addbutton = document.getElementById('AddButton');
+const updatebutton = document.getElementById('UpdateButton');
+let productList = []
+const QuantityInput = document.getElementById('productQuantity');
+const alertnamv = document.getElementById('alertName');
+const alertpricev =document.getElementById('alertPrice');
+const alerttypev =document.getElementById('alertType');
+const alertdescv =document.getElementById('alertDesc');
+const alertQuantity = document.getElementById('alertQuantity');
 
 if (localStorage.getItem('products') != null) {
     productList = JSON.parse(localStorage.getItem('products'))
@@ -20,16 +19,16 @@ if (localStorage.getItem('products') != null) {
 }
 
 function addProduct(){
-    if(namevalidation() && pricevalidation() && typevalidation() && descvalidation()){
+    if(namevalidation() && pricevalidation() && typevalidation() && descvalidation() && Quantityvalidation()){
         var product = {
-        name: nameInput.value,
-        price: priceInput.value,
-        type: typeInput.value,
-        desc: descInput.value,
+            name: nameInput.value,
+            price: priceInput.value,
+            type: typeInput.value,
+            Quantity: QuantityInput.value,
+            desc: descInput.value,
         };
         productList.push(product)
         localStorage.setItem('products', JSON.stringify(productList));
-        console.log(productList);
         display();
         clearInput();
     }
@@ -39,21 +38,28 @@ function clearInput(){
     nameInput.value='';
     priceInput.value='';
     typeInput.value='';
+    QuantityInput.value='';
     descInput.value='';
+    priceInput.classList.remove('is-valid');
+    nameInput.classList.remove('is-valid');
+    typeInput.classList.remove('is-valid');
+    QuantityInput.classList.remove('is-valid');
+    descInput.classList.remove('is-valid');
 }
 
 function display(){
     var box ='';
-    for(var i=0; i<productList.length;i++){
+    for(let i=0; i<productList.length;i++){
         box+=` <tr>
                 <th scope="row">${i+1}</th>
                 <td>${productList[i].name}</td>
                 <td>${productList[i].price}</td>
                 <td>${productList[i].type}</td>
+                <td>${productList[i].Quantity}</td>
                 <td>${productList[i].desc}</td>
                 <td>
                     <button class="btn btn-danger text-white" onclick="deleteProduct(${i})">Delete</button>
-                    <button class="btn btn-warning" onclick="EditProduct(${i})">Edit</button>
+                    <button class="btn btn-warning mt-md-0 mt-2" onclick="EditProduct(${i})">Edit</button>
                 </td>
                 </tr>`
     }
@@ -68,10 +74,10 @@ function deleteProduct(index){
 
 
 function search(){
-    var searchValue=searchInput.value.toLowerCase();
-    var box='';
-    var term='';
-    for (var i = 0; i < productList.length; i++) {
+    let searchValue=searchInput.value.toLowerCase();
+    let box='';
+    let term='';
+    for (let i = 0; i < productList.length; i++) {
         term=productList[i].name.toLowerCase();
         if(term.includes(searchValue)) {
               box+=` <tr>
@@ -79,10 +85,11 @@ function search(){
                 <td>${productList[i].name}</td>
                 <td>${productList[i].price}</td>
                 <td>${productList[i].type}</td>
+                <td>${productList[i].Quantity}</td>
                 <td>${productList[i].desc}</td>
                 <td>
                     <button class="btn btn-danger text-white" onclick="deleteProduct(${i})">Delete</button>
-                    <button class="btn btn-warning" onclick="EditProduct(${i})">Edit</button>
+                    <button class="btn btn-warning btn" onclick="EditProduct(${i})">Edit</button>
                 </td>
                 </tr>`
      }         
@@ -90,7 +97,7 @@ function search(){
     tableBody.innerHTML=box;
 }
 
-var updateindex=0;
+let updateindex=0;
 
 function EditProduct(index){
     updateindex=index;
@@ -101,8 +108,8 @@ function EditProduct(index){
     priceInput.value=productList[index].price;
     typeInput.value=productList[index].type;
     descInput.value=productList[index].desc;
-
-    console.log(updateindex);
+    QuantityInput.value=productList[index].Quantity;
+    
 }
 
 
@@ -112,6 +119,7 @@ function updateProduct() {
         price: priceInput.value,
         type: typeInput.value,
         desc: descInput.value,
+        Quantity: QuantityInput.value
     };
 
     productList.splice(updateindex, 1, updatedProduct);
@@ -126,9 +134,9 @@ function updateProduct() {
  
 
 function namevalidation(){
-     var regex=/[A-Z][a-z]{3,8}/;
+     let regex=/[A-Z][a-z]{3,8}/;
      nameVal=nameInput.value;
-     var nameresult =regex.test(nameVal);
+     let nameresult =regex.test(nameVal);
       if (nameresult) {
         alertnamv.classList.replace('d-block','d-none');
         nameInput.classList.add('is-valid');
@@ -145,9 +153,9 @@ function namevalidation(){
 }
 
 function pricevalidation(){
-    var regexprice=/^(1000|[1-9][0-9]{3}|10000)$/;
+    let regexprice=/^\d+(\.\d{1,2})?$/;
     priceVal=priceInput.value;
-    var priceresult =regexprice.test(priceVal);
+    let priceresult =regexprice.test(priceVal);
 
     if (priceresult) {
         alertpricev.classList.replace('d-block','d-none');
@@ -165,10 +173,10 @@ function pricevalidation(){
 }
 
 function typevalidation(){
-    var regextype=/^(mobile|screen|watch)$/;
+    let regextype=/^[A-Z][a-zA-Z]{1,11}$/;
     typeVal=typeInput.value;
 
-    var typeresult =regextype.test(typeVal);
+    let typeresult =regextype.test(typeVal);
 
     if (typeresult) {
 
@@ -187,10 +195,32 @@ function typevalidation(){
     }
 }
 
+function Quantityvalidation(){
+    let regexQuantity=/^[1-9]\d*$/;
+    QuantityVal=QuantityInput.value;
+
+    let Quantityresult =regexQuantity.test(QuantityVal);
+
+    if (Quantityresult) {
+
+       alertQuantity.classList.replace('d-block','d-none');
+        QuantityInput.classList.add('is-valid');
+        QuantityInput.classList.remove('is-invalid');
+        
+        return true;
+    }
+    else{
+        alertQuantity.classList.replace('d-none','d-block');
+        QuantityInput.classList.add('is-invalid');
+        QuantityInput.classList.remove('is-valid');
+
+        return false;
+    }
+}
 function descvalidation(){
-    var regexdesc=/^(?:\b\w+\b[\s\r\n]*){20,500}$/;
+    let regexdesc=/^$|^[a-zA-Z0-9\s]{9,100}$/;
     descVal=descInput.value;
-    var descresult =regexdesc.test(descVal);
+    let descresult =regexdesc.test(descVal);
 
     if (descresult) {
         alertdescv.classList.replace('d-block','d-none');
